@@ -1,11 +1,20 @@
-Array.prototype.customFilter = function (callback, context) {
-  let arr = [];
-
-  for (let i = 0; i < this.length; i++) {
-    if (callback.call(context, this[i], i, this)) {
-      arr.push(this[i]);
+const concatStrings = (firstString = '', separator = '') => {
+  return (secondString) => {
+    if (typeof separator !== 'string') {
+      separator = '';
     }
-  }
 
-  return arr;
+    if (typeof secondString !== 'string') {
+      return `${firstString}`;
+    }
+
+    return concatStrings(`${firstString}${separator}${secondString}`, separator);
+  };
 };
+
+concatStrings('first')('second')('third')();
+concatStrings('first', null)('second')()('third');
+concatStrings('first', '123')('second')('third')();
+concatStrings('some-value')('')('')(null);
+concatStrings('some-value')(2);
+concatStrings('some-val')('333')(123n)('end');
